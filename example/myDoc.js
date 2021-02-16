@@ -1,4 +1,4 @@
-import tableSchema from 'part:sanity-plugin-power-table/schema'
+import tableSchema from 'part:power-table/schema'
 
 export const {table: simpleTable, schemas: simpleTableSchemas} = tableSchema({
   name: 'simpleTable',

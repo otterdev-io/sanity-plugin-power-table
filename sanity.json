@@ -5,19 +5,19 @@
   },
   "parts": [
     {
-      "name": "part:sanity-plugin-power-table/table-input",
+      "name": "part:power-table/table-input",
       "description": "Table input"
     },
     {
-      "implements": "part:sanity-plugin-power-table/table-input",
+      "implements": "part:power-table/table-input",
       "path": "table-input.js"
     },
     {
-      "name": "part:sanity-plugin-power-table/schema",
+      "name": "part:power-table/schema",
       "description": "Table input schema"
     },
     {
-      "implements": "part:sanity-plugin-power-table/schema",
+      "implements": "part:power-table/schema",
       "path": "schema.js"
     }
   ]

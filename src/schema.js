@@ -1,4 +1,4 @@
-import TableInput from 'part:sanity-plugin-power-table/table-input'
+import TableInput from './table-input'
 
 export default function tableSchema({title, name, rowSchema, cellSchema}) {
   const table = {

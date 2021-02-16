@@ -15,7 +15,7 @@
   "author": "Christopher Fraser <chris@otterdev.io>",
   "license": "MIT",
   "dependencies": {
-    "@sanity/ui": "^0.33.1",
+    "@sanity/ui": "^0.33.3",
     "@sanity/uuid": "^3.0.1",
     "prop-types": "15.7.2",
     "react-focus-lock": "^2.5.0",
@@ -28,11 +28,11 @@
     "eslint-config-sanity": "5.0.0",
     "eslint-plugin-react": "7.22.0",
     "prettier": "2.2.1",
-    "sanipack": "1.0.7"
+    "sanipack": "1.0.8"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.9 || ^17",
+    "react-dom": "^16.9 || ^17",
     "styled-components": "^5.2.1"
   },
   "prettier": {

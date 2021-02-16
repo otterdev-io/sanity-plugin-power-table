@@ -15,7 +15,7 @@ sanity install power-table
 ## Usage
 * First import the schema generating function:
   ```js
-  import tableSchema from 'part:sanity-plugin-power-table/schema'
+  import tableSchema from 'part:power-table/schema'
   ```
 
 * Next create and export schema for your table. 
