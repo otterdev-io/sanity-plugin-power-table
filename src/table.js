@@ -8,10 +8,9 @@ import {FormBuilderInput} from 'part:@sanity/form-builder'
 import Dialog from 'part:@sanity/components/dialogs/default'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc'
 import DragBarsIcon from 'part:@sanity/base/bars-icon'
-import {Button, TextInput, Flex} from '@sanity/ui'
+import {Button, TextInput, Flex, Inline} from '@sanity/ui'
 import {IoAddCircleOutline, IoTrash} from 'react-icons/io5'
 import {RiLayoutColumnLine, RiLayoutRowLine, RiEditLine} from 'react-icons/ri'
-import FocusLock from 'react-focus-lock'
 
 const DragHandle = sortableHandle(() => (
   <td className={styles.dragHandle}>
@@ -72,6 +71,9 @@ const RenderCell = React.memo(
     setObjectEditOpen,
     setRowSpan,
     setColSpan,
+    onFocus,
+    onBlur,
+    focusPath,
   }) => {
     const isStringInput = cellDataType.jsonType === 'string'
     const cellStyles = isStringInput ? styles.textInputCell : styles.objectCell
@@ -115,42 +117,40 @@ const RenderCell = React.memo(
         )}
         {active && (
           <Flex justify="space-between" className={styles.cellControls} marginTop={1}>
-            <Button
-              icon={IoAddCircleOutline}
-              mode="bleed"
-              onClick={() => addCellLeft(rowKey, cell._key)}
-            />
-            <Flex>
+            <Flex className={styles.cellLeftControls}>
+              <Button
+                icon={IoAddCircleOutline}
+                mode="bleed"
+                onClick={() => addCellLeft(rowKey, cell._key)}
+              />
               <IntInput
                 icon={RiLayoutRowLine}
                 value={cell.rowSpan}
-                size={1}
                 border={false}
                 onChange={(num) => setRowSpan(num, rowKey, cell._key)}
+                width={1}
               />
               <IntInput
                 icon={RiLayoutColumnLine}
                 value={cell.colSpan}
-                size={1}
                 border={false}
                 onChange={(num) => setColSpan(num, rowKey, cell._key)}
+                width={1}
               />
-            </Flex>
-            <Flex>
               <Button
                 icon={IoAddCircleOutline}
                 mode="bleed"
                 onClick={() => addCellRight(rowKey, cell._key)}
               />
-              <Button
-                icon={IoTrash}
-                mode="bleed"
-                onClick={() => {
-                  deleteCell(rowKey, cell._key)
-                  setObjectEditOpen(false)
-                }}
-              />
             </Flex>
+            <Button
+              icon={IoTrash}
+              mode="bleed"
+              onClick={() => {
+                deleteCell(rowKey, cell._key)
+                setObjectEditOpen(false)
+              }}
+            />
           </Flex>
         )}
         {active && objectEditOpen && (
@@ -159,21 +159,21 @@ const RenderCell = React.memo(
             onClickOutside={() => setObjectEditOpen(false)}
             onClose={() => setObjectEditOpen(false)}
           >
-            <FocusLock>
-              <FormBuilderInput
-                type={cellDataType}
-                value={cell.data}
-                onChange={(patchEvent) => {
-                  const newEvent = ['data', {_key: cell._key}, 'cells', {_key: rowKey}].reduce(
-                    (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
-                    patchEvent
-                  )
-                  return onEvent(newEvent)
-                }}
-                onBlur={() => {}}
-                onFocus={() => {}}
-              />
-            </FocusLock>
+            <FormBuilderInput
+              type={cellDataType}
+              value={cell.data}
+              path={[cell._key]}
+              focusPath={focusPath}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onChange={(patchEvent) => {
+                const newEvent = ['data', {_key: cell._key}, 'cells', {_key: rowKey}].reduce(
+                  (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
+                  patchEvent
+                )
+                return onEvent(newEvent)
+              }}
+            />
           </Dialog>
         )}
       </td>
@@ -193,12 +193,19 @@ const Table = ({
   deleteCell,
   setRowSpan,
   setColSpan,
+  onFocus,
+  onBlur,
+  focusPath,
 }) => {
   if (!rows || !rows.length) return null
   const {cellDataType: propCellDataType, rowDataType} = tableTypes
   const [objectEditOpen, setObjectEditOpen] = useState(false)
   const [activeCell, setActiveCell] = useState(null)
   const [editRow, setEditRow] = useState(null)
+
+  useEffect(() => {
+    onFocus(focusPath)
+  }, [])
 
   const cellDataType = useMemo(
     () => ({
@@ -230,7 +237,7 @@ const Table = ({
 
   return (
     <div className={styles.container}>
-      <SortableContainer onSortEnd={handleSortEnd} useDragHandle>
+      <SortableContainer key="container" onSortEnd={handleSortEnd} useDragHandle>
         {rows.map((row, rowIndex) => (
           <SortableItem
             key={row._key}
@@ -255,6 +262,9 @@ const Table = ({
                       setActiveCell,
                       setRowSpan,
                       setColSpan,
+                      onFocus,
+                      onBlur,
+                      focusPath,
                     }}
                   />
                 ))}
@@ -266,21 +276,21 @@ const Table = ({
                         onClickOutside={() => setEditRow(null)}
                         onClose={() => setEditRow(null)}
                       >
-                        <FocusLock>
-                          <FormBuilderInput
-                            type={rowDataType}
-                            value={row.data}
-                            onChange={(patchEvent) => {
-                              const newEvent = ['data', {_key: row._key}].reduce(
-                                (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
-                                patchEvent
-                              )
-                              return onEvent(newEvent)
-                            }}
-                            onBlur={() => {}}
-                            onFocus={() => {}}
-                          />
-                        </FocusLock>
+                        <FormBuilderInput
+                          type={rowDataType}
+                          value={row.data}
+                          onChange={(patchEvent) => {
+                            const newEvent = ['data', {_key: row._key}].reduce(
+                              (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
+                              patchEvent
+                            )
+                            return onEvent(newEvent)
+                          }}
+                          path={[cell._key]}
+                          focusPath={focusPath}
+                          onFocus={onFocus}
+                          onBlur={onBlur}
+                        />
                       </Dialog>
                     )}
                   </EditRow>

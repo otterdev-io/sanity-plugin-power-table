@@ -10,7 +10,6 @@ import FormField from 'part:@sanity/components/formfields/default'
 import ConfirmationDialog from 'part:@sanity/components/dialogs/confirm'
 import FullScreenDialog from 'part:@sanity/components/dialogs/fullscreen'
 import {IoMdAdd, IoMdTrash} from 'react-icons/io'
-import FocusLock from 'react-focus-lock'
 
 function getTableTypes(type) {
   const rowTypeObject = type.of[0]
@@ -27,7 +26,7 @@ function getTableTypes(type) {
 }
 
 const TableInput = React.forwardRef((props, ref) => {
-  const {type, value, onChange} = props
+  const {type, value, onChange, focusPath, onFocus, onBlur} = props
   const currentValue = useRef(value)
   useEffect(() => {
     currentValue.current = value
@@ -208,6 +207,9 @@ const TableInput = React.forwardRef((props, ref) => {
         addCellLeft={addCellLeft}
         addCellRight={addCellRight}
         deleteCell={deleteCell}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        focusPath={[...(focusPath ?? []), 'table']}
       />
     ) : null
 
@@ -243,17 +245,16 @@ const TableInput = React.forwardRef((props, ref) => {
       <FormField label={type.title} description={type.description}>
         {editorOpen && (
           <FullScreenDialog
+            key="tableDialog"
             title={type.title}
             onClose={() => setEditorOpen(false)}
             onEscape={() => setEditorOpen(false)}
           >
-            <FocusLock>
-              <div>
-                {table}
-                {buttons}
-                {confirmationDialog}
-              </div>
-            </FocusLock>
+            <div>
+              {table}
+              {buttons}
+              {confirmationDialog}
+            </div>
           </FullScreenDialog>
         )}
         <Button onClick={() => setEditorOpen(true)} text="Edit Table" />
