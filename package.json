@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-power-table",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Create tables cell by cell, with a custom schema for rows and cells",
   "main": "lib/table-input.js",
   "scripts": {
