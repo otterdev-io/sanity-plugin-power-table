@@ -12,7 +12,6 @@ import FullScreenDialog from 'part:@sanity/components/dialogs/fullscreen'
 import {IoMdAdd, IoMdTrash} from 'react-icons/io'
 
 function getTableTypes(type) {
-  console.log(type)
   const rowTypeObject = type.fields.find((t) => t.name === 'rows').type.of[0]
   const rowDataTypeObject = rowTypeObject.fields.find((r) => r.name === 'data')?.type
   const cellTypeObject = rowTypeObject.fields.find((r) => r.name === 'cells').type.of[0]
@@ -71,15 +70,18 @@ const TableInput = React.forwardRef((props, ref) => {
 
   const initializeTable = useCallback(() => {
     // Add a single row with a single empty cell (1 row, 1 column)
-    const newValue = [
-      {
-        _type: tableTypes.rowTypeName,
-        _key: uuid(),
-        cells: [newCell()],
-      },
-    ]
+    const newValue = {
+      _type: type.name,
+      rows: [
+        {
+          _type: tableTypes.rowTypeName,
+          _key: uuid(),
+          cells: [newCell()],
+        },
+      ],
+    }
     return onChange(PatchEvent.from(set(newValue)))
-  }, [onChange, tableTypes.rowTypeName, tableTypes.cellTypeName, newCell])
+  }, [type.name, onChange, tableTypes.rowTypeName, tableTypes.cellTypeName, newCell])
 
   const addRow = useCallback(
     (e) => {
