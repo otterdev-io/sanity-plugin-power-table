@@ -51,7 +51,7 @@ const TableInput = React.forwardRef((props, ref) => {
 
   const newCell = useCallback(
     () => ({
-      _type: tableTypes.cellTypeName,
+      _type: [tableTypes.cellTypeName],
       _key: uuid(),
       colSpan: 1,
       rowSpan: 1,
@@ -76,7 +76,7 @@ const TableInput = React.forwardRef((props, ref) => {
       _type: type.name,
       rows: [
         {
-          _type: tableTypes.rowTypeName,
+          _type: [tableTypes.rowTypeName],
           _key: uuid(),
           cells: [newCell()],
         },
@@ -94,7 +94,7 @@ const TableInput = React.forwardRef((props, ref) => {
         _key: uuid(),
         cells: [newCell()],
       }
-      return onChange(PatchEvent.from(insert('rows', [newRow], 'after', [-1])))
+      return onChange(PatchEvent.from(insert([newRow], 'after', ['rows', -1])))
     },
     [onChange, initializeTable, tableTypes.rowTypeName, newCell]
   )
