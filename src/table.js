@@ -167,10 +167,13 @@ const RenderCell = React.memo(
               onFocus={onFocus}
               onBlur={onBlur}
               onChange={(patchEvent) => {
-                const newEvent = ['data', {_key: cell._key}, 'cells', {_key: rowKey}].reduce(
-                  (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
-                  patchEvent
-                )
+                const newEvent = [
+                  'data',
+                  {_key: cell._key},
+                  'cells',
+                  {_key: rowKey},
+                  'rows',
+                ].reduce((prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg), patchEvent)
                 return onEvent(newEvent)
               }}
             />
@@ -280,7 +283,7 @@ const Table = ({
                           type={rowDataType}
                           value={row.data}
                           onChange={(patchEvent) => {
-                            const newEvent = ['data', {_key: row._key}].reduce(
+                            const newEvent = ['data', {_key: row._key}, 'rows'].reduce(
                               (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
                               patchEvent
                             )

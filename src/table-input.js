@@ -63,7 +63,9 @@ const TableInput = React.forwardRef((props, ref) => {
   const updateStringCell = useCallback(
     (stringValue, rowKey, cellKey) =>
       onChange(
-        PatchEvent.from(set(stringValue, [{_key: rowKey}, 'cells', {_key: cellKey}, 'data']))
+        PatchEvent.from(
+          set(stringValue, ['rows', {_key: rowKey}, 'cells', {_key: cellKey}, 'data'])
+        )
       ),
     [onChange]
   )
@@ -92,7 +94,7 @@ const TableInput = React.forwardRef((props, ref) => {
         _key: uuid(),
         cells: [newCell()],
       }
-      return onChange(PatchEvent.from(insert([newRow], 'after', [-1])))
+      return onChange(PatchEvent.from(insert('rows', [newRow], 'after', [-1])))
     },
     [onChange, initializeTable, tableTypes.rowTypeName, newCell]
   )
@@ -100,7 +102,9 @@ const TableInput = React.forwardRef((props, ref) => {
   const addCellLeft = useCallback(
     (rowKey, cellKey) =>
       onChange(
-        PatchEvent.from(insert([newCell()], 'before', [{_key: rowKey}, 'cells', {_key: cellKey}]))
+        PatchEvent.from(
+          insert([newCell()], 'before', ['rows', {_key: rowKey}, 'cells', {_key: cellKey}])
+        )
       ),
     [newCell]
   )
@@ -108,23 +112,26 @@ const TableInput = React.forwardRef((props, ref) => {
   const addCellRight = useCallback(
     (rowKey, cellKey) =>
       onChange(
-        PatchEvent.from(insert([newCell()], 'after', [{_key: rowKey}, 'cells', {_key: cellKey}]))
+        PatchEvent.from(
+          insert([newCell()], 'after', ['rows', {_key: rowKey}, 'cells', {_key: cellKey}])
+        )
       ),
     [newCell]
   )
 
   const deleteCell = useCallback((rowKey, cellKey) => {
-    return onChange(PatchEvent.from(unset([{_key: rowKey}, 'cells', {_key: cellKey}])))
+    return onChange(PatchEvent.from(unset(['rows', {_key: rowKey}, 'cells', {_key: cellKey}])))
   }, [])
 
-  const removeRow = useCallback((rowKey) => onChange(PatchEvent.from(unset([{_key: rowKey}]))), [
-    onChange,
-  ])
+  const removeRow = useCallback(
+    (rowKey) => onChange(PatchEvent.from(unset(['rows', {_key: rowKey}]))),
+    [onChange]
+  )
 
   const setRowSpan = useCallback(
     (rowSpan, rowKey, cellKey) =>
       onChange(
-        PatchEvent.from(set(rowSpan, [{_key: rowKey}, 'cells', {_key: cellKey}, 'rowSpan']))
+        PatchEvent.from(set(rowSpan, ['rows', {_key: rowKey}, 'cells', {_key: cellKey}, 'rowSpan']))
       ),
     [onChange]
   )
@@ -132,7 +139,7 @@ const TableInput = React.forwardRef((props, ref) => {
   const setColSpan = useCallback(
     (colSpan, rowKey, cellKey) =>
       onChange(
-        PatchEvent.from(set(colSpan, [{_key: rowKey}, 'cells', {_key: cellKey}, 'colSpan']))
+        PatchEvent.from(set(colSpan, ['rows', {_key: rowKey}, 'cells', {_key: cellKey}, 'colSpan']))
       ),
     [onChange]
   )
@@ -153,8 +160,8 @@ const TableInput = React.forwardRef((props, ref) => {
       }
       onChange(
         PatchEvent.from(
-          unset([{_key: item._key}]),
-          insert([item], oldIndex > newIndex ? 'before' : 'after', [{_key: refItem._key}])
+          unset(['rows', {_key: item._key}]),
+          insert([item], oldIndex > newIndex ? 'before' : 'after', ['rows', {_key: refItem._key}])
         )
       )
     },
