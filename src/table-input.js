@@ -196,25 +196,24 @@ const TableInput = React.forwardRef((props, ref) => {
 
   const [editorOpen, setEditorOpen] = useState(false)
 
-  const table =
-    value && value.length ? (
-      <Table
-        rows={value}
-        updateStringCell={updateStringCell}
-        setRowSpan={setRowSpan}
-        setColSpan={setColSpan}
-        onEvent={onChange}
-        removeRow={onRemoveRowRequest}
-        tableTypes={tableTypes}
-        handleSortEnd={handleSortEnd}
-        addCellLeft={addCellLeft}
-        addCellRight={addCellRight}
-        deleteCell={deleteCell}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        focusPath={[...(focusPath ?? []), 'table']}
-      />
-    ) : null
+  const table = value?.rows?.length ? (
+    <Table
+      table={value}
+      updateStringCell={updateStringCell}
+      setRowSpan={setRowSpan}
+      setColSpan={setColSpan}
+      onEvent={onChange}
+      removeRow={onRemoveRowRequest}
+      tableTypes={tableTypes}
+      handleSortEnd={handleSortEnd}
+      addCellLeft={addCellLeft}
+      addCellRight={addCellRight}
+      deleteCell={deleteCell}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      focusPath={[...(focusPath ?? []), 'table']}
+    />
+  ) : null
 
   const buttons = value ? (
     <Flex justify="space-between">

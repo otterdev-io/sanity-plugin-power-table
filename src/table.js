@@ -182,7 +182,7 @@ const RenderCell = React.memo(
 )
 
 const Table = ({
-  rows,
+  table,
   updateStringCell,
   onEvent,
   removeRow,
@@ -197,7 +197,7 @@ const Table = ({
   onBlur,
   focusPath,
 }) => {
-  if (!rows || !rows.length) return null
+  if (!table?.rows?.length) return null
   const {cellDataType: propCellDataType, rowDataType} = tableTypes
   const [objectEditOpen, setObjectEditOpen] = useState(false)
   const [activeCell, setActiveCell] = useState(null)
@@ -238,7 +238,7 @@ const Table = ({
   return (
     <div className={styles.container}>
       <SortableContainer key="container" onSortEnd={handleSortEnd} useDragHandle>
-        {rows.map((row, rowIndex) => (
+        {table.rows.map((row, rowIndex) => (
           <SortableItem
             key={row._key}
             index={rowIndex}
