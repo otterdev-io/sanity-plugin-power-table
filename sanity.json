@@ -1,0 +1,24 @@
+{
+  "paths": {
+    "source": "./src",
+    "compiled": "./lib"
+  },
+  "parts": [
+    {
+      "name": "part:sanity-plugin-power-table/table-input",
+      "description": "Table input"
+    },
+    {
+      "implements": "part:sanity-plugin-power-table/table-input",
+      "path": "table-input.js"
+    },
+    {
+      "name": "part:sanity-plugin-power-table/schema",
+      "description": "Table input schema"
+    },
+    {
+      "implements": "part:sanity-plugin-power-table/schema",
+      "path": "schema.js"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+.table {
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.row {
+  position: relative;
+}
+
+.textInputCell {
+  padding: 0;
+}
+
+.objectCell {
+  border: 1px solid rgb(230, 230, 230);
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.cell {
+  border: 1px solid rgb(230, 230, 230);
+  min-width: 80px;
+}
+
+.activeCell {
+  border: 1px solid rgb(160, 200, 255);
+}
+
+.cellControls {
+}
+
+.textInput input {
+  border: 0;
+}
+.objectInput {
+  box-sizing: border-box;
+  border: none;
+  width: 100%;
+  outline: none;
+  overflow: hidden;
+  font-size: 0.8em;
+}
+
+.objectPreview {
+}
+
+.objectInput span {
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  padding: 4px;
+}
+
+.objectInput:focus {
+  outline: none;
+  background: rgb(242, 242, 242);
+}
+
+.input:focus {
+  outline: none;
+  background: rgb(242, 242, 242);
+}
+
+.rowDelete,
+.colDelete {
+  color: rgb(242, 242, 242);
+  padding: 0;
+  text-align: center;
+}
+
+.rowDelete {
+  right: -40px;
+}
+
+.rowDelete > span,
+.colDelete > span {
+  cursor: pointer;
+  margin: 0 auto;
+  display: flex;
+  width: 1em;
+  height: 3px;
+  line-height: 1em;
+  background: #ff000033;
+  align-items: center;
+  justify-content: center;
+}
+
+.rowDelete > span:hover,
+.colDelete > span:hover {
+  background: #ff0000;
+}
+
+.dragHandle {
+  cursor: ns-resize;
+  font-size: 1.5em;
+  opacity: 0.5;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  z-index: 1;
+}
+
+.dragHandle:hover {
+  opacity: 1;
+}
+
+.dragHandle svg {
+  font-size: inherit;
+  display: block;
+}
+
+.container {
+  overflow-x: scroll;
+}
