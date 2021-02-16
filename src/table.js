@@ -5,9 +5,10 @@ import React, {useState, useCallback, useMemo, useEffect} from 'react'
 import styles from './table.css'
 import Preview from 'part:@sanity/base/preview'
 import {FormBuilderInput} from 'part:@sanity/form-builder'
+import Dialog from 'part:@sanity/components/dialogs/default'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc'
 import DragBarsIcon from 'part:@sanity/base/bars-icon'
-import {Dialog, Button, TextInput, Flex} from '@sanity/ui'
+import {Button, TextInput, Flex} from '@sanity/ui'
 import {IoAddCircleOutline, IoTrash} from 'react-icons/io5'
 import {RiLayoutColumnLine, RiLayoutRowLine, RiEditLine} from 'react-icons/ri'
 import FocusLock from 'react-focus-lock'
@@ -153,7 +154,11 @@ const RenderCell = React.memo(
           </Flex>
         )}
         {active && objectEditOpen && (
-          <Dialog header={cellDataType.title} onClose={() => setObjectEditOpen(false)}>
+          <Dialog
+            title={cellDataType.title}
+            onClickOutside={() => setObjectEditOpen(false)}
+            onClose={() => setObjectEditOpen(false)}
+          >
             <FocusLock>
               <FormBuilderInput
                 type={cellDataType}
@@ -256,7 +261,11 @@ const Table = ({
                 {rowDataType && (
                   <EditRow key={`${row._key}-edit`} rowKey={row._key}>
                     {editRow && (
-                      <Dialog header={rowDataType.title} onClose={() => setEditRow(null)}>
+                      <Dialog
+                        title={rowDataType.title}
+                        onClickOutside={() => setEditRow(null)}
+                        onClose={() => setEditRow(null)}
+                      >
                         <FocusLock>
                           <FormBuilderInput
                             type={rowDataType}
