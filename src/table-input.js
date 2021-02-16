@@ -14,7 +14,7 @@ import FocusLock from 'react-focus-lock'
 
 function getTableTypes(type) {
   const rowTypeObject = type.of[0]
-  const rowDataTypeObject = rowTypeObject.fields.find((r) => r.name === 'data').type
+  const rowDataTypeObject = rowTypeObject.fields.find((r) => r.name === 'data')?.type
   const cellTypeObject = rowTypeObject.fields.find((r) => r.name === 'cells').type.of[0]
   const cellDataTypeObject = cellTypeObject.fields.find((f) => f.name === 'data').type
 

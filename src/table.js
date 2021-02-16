@@ -258,31 +258,33 @@ const Table = ({
                     }}
                   />
                 ))}
-                <EditRow key={`${row._key}-edit`} rowKey={row._key}>
-                  {editRow && (
-                    <FullScreenDialog
-                      title={rowDataType.title}
-                      onClickOutside={() => setEditRow(null)}
-                      onClose={() => setEditRow(null)}
-                    >
-                      <FocusLock>
-                        <FormBuilderInput
-                          type={rowDataType}
-                          value={row.data}
-                          onChange={(patchEvent) => {
-                            const newEvent = ['data', {_key: row._key}].reduce(
-                              (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
-                              patchEvent
-                            )
-                            return onEvent(newEvent)
-                          }}
-                          onBlur={() => {}}
-                          onFocus={() => {}}
-                        />
-                      </FocusLock>
-                    </FullScreenDialog>
-                  )}
-                </EditRow>
+                {rowDataType && (
+                  <EditRow key={`${row._key}-edit`} rowKey={row._key}>
+                    {editRow && (
+                      <FullScreenDialog
+                        title={rowDataType.title}
+                        onClickOutside={() => setEditRow(null)}
+                        onClose={() => setEditRow(null)}
+                      >
+                        <FocusLock>
+                          <FormBuilderInput
+                            type={rowDataType}
+                            value={row.data}
+                            onChange={(patchEvent) => {
+                              const newEvent = ['data', {_key: row._key}].reduce(
+                                (prefixedEvent, pathSeg) => prefixedEvent.prefixAll(pathSeg),
+                                patchEvent
+                              )
+                              return onEvent(newEvent)
+                            }}
+                            onBlur={() => {}}
+                            onFocus={() => {}}
+                          />
+                        </FocusLock>
+                      </FullScreenDialog>
+                    )}
+                  </EditRow>
+                )}
                 <RowRemover key={`${row._key}-remover`} rowKey={row._key} />
               </>
             }
