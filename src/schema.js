@@ -20,18 +20,7 @@ export default function tableSchema({title, name, rowSchema, cellSchema}) {
         type: 'array',
         of: [{type: `${name}.cell`}],
       },
-      {
-        title: 'Row Data',
-        name: 'data',
-        type: `${name}.row.data`,
-      },
     ],
-  }
-
-  const rowData = {
-    title: 'Row Data',
-    name: `${name}.row.data`,
-    ...rowSchema,
   }
 
   const cell = {
@@ -59,5 +48,23 @@ export default function tableSchema({title, name, rowSchema, cellSchema}) {
     ...cellSchema,
   }
 
-  return {table, schemas: [table, row, rowData, cell, cellData]}
+  const schemas = [table, row, cell, cellData]
+
+  if (rowSchema) {
+    row.fields.push({
+      title: 'Row Data',
+      name: 'data',
+      type: `${name}.row.data`,
+    })
+
+    const rowData = {
+      title: 'Row Data',
+      name: `${name}.row.data`,
+      ...rowSchema,
+    }
+
+    schemas.push(rowData)
+  }
+
+  return {table, schemas}
 }
