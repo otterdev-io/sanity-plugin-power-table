@@ -5,10 +5,9 @@ import React, {useState, useCallback, useMemo, useEffect} from 'react'
 import styles from './table.css'
 import Preview from 'part:@sanity/base/preview'
 import {FormBuilderInput} from 'part:@sanity/form-builder'
-import FullScreenDialog from 'part:@sanity/components/dialogs/fullscreen'
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc'
 import DragBarsIcon from 'part:@sanity/base/bars-icon'
-import {Button, TextInput, Flex} from '@sanity/ui'
+import {Dialog, Button, TextInput, Flex} from '@sanity/ui'
 import {IoAddCircleOutline, IoTrash} from 'react-icons/io5'
 import {RiLayoutColumnLine, RiLayoutRowLine, RiEditLine} from 'react-icons/ri'
 import FocusLock from 'react-focus-lock'
@@ -154,11 +153,7 @@ const RenderCell = React.memo(
           </Flex>
         )}
         {active && objectEditOpen && (
-          <FullScreenDialog
-            title={cellDataType.title}
-            onClickOutside={() => setObjectEditOpen(false)}
-            onClose={() => setObjectEditOpen(false)}
-          >
+          <Dialog header={cellDataType.title} onClose={() => setObjectEditOpen(false)}>
             <FocusLock>
               <FormBuilderInput
                 type={cellDataType}
@@ -174,7 +169,7 @@ const RenderCell = React.memo(
                 onFocus={() => {}}
               />
             </FocusLock>
-          </FullScreenDialog>
+          </Dialog>
         )}
       </td>
     )
@@ -261,11 +256,7 @@ const Table = ({
                 {rowDataType && (
                   <EditRow key={`${row._key}-edit`} rowKey={row._key}>
                     {editRow && (
-                      <FullScreenDialog
-                        title={rowDataType.title}
-                        onClickOutside={() => setEditRow(null)}
-                        onClose={() => setEditRow(null)}
-                      >
+                      <Dialog header={rowDataType.title} onClose={() => setEditRow(null)}>
                         <FocusLock>
                           <FormBuilderInput
                             type={rowDataType}
@@ -281,7 +272,7 @@ const Table = ({
                             onFocus={() => {}}
                           />
                         </FocusLock>
-                      </FullScreenDialog>
+                      </Dialog>
                     )}
                   </EditRow>
                 )}
