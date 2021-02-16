@@ -1,12 +1,19 @@
 import TableInput from './table-input'
 
-export default function tableSchema({title, name, rowSchema, cellSchema}) {
+export default function tableSchema({name, rowSchema, cellSchema}) {
   const table = {
-    title,
-    name,
-    type: 'array',
-    of: [{type: `${name}.row`}],
+    title: 'Table',
+    name: name,
+    type: 'object',
     inputComponent: TableInput,
+    fields: [
+      {
+        name: 'rows',
+        title: 'Rows',
+        type: 'array',
+        of: [{type: `${name}.row`}],
+      },
+    ],
   }
 
   const row = {
@@ -66,5 +73,5 @@ export default function tableSchema({title, name, rowSchema, cellSchema}) {
     schemas.push(rowData)
   }
 
-  return {table, schemas}
+  return schemas
 }

@@ -1,6 +1,6 @@
 import tableSchema from 'part:power-table/schema'
 
-export const {table: simpleTable, schemas: simpleTableSchemas} = tableSchema({
+export const simpleTableSchemas = tableSchema({
   name: 'simpleTable',
   title: 'Simple table',
   cellSchema: {
@@ -8,7 +8,7 @@ export const {table: simpleTable, schemas: simpleTableSchemas} = tableSchema({
   },
 })
 
-export const {table: blockTable, schemas: blockTableSchemas} = tableSchema({
+export const blockTableSchemas = tableSchema({
   name: 'blockTable',
   title: 'Block Table',
   rowSchema: {
@@ -45,7 +45,15 @@ export default {
       type: 'array',
       of: [{type: 'block'}],
     },
-    simpleTable,
-    blockTable,
+    {
+      name: 'demoSimpleTable',
+      title: 'Simple Table',
+      type: 'simpleTable',
+    },
+    {
+      name: 'demoBlockTable',
+      title: 'Block Table',
+      type: 'blockTable',
+    },
   ],
 }

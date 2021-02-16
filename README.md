@@ -24,7 +24,7 @@ sanity install power-table
 
   - Minimal example:
     ```js
-    export const { table: myTable, schemas: myTableSchemas } = tableSchema({
+    export const myTableSchemas = tableSchema({
       name: 'myTable',
       title: 'My table',
       cellSchema: {
@@ -35,7 +35,7 @@ sanity install power-table
 
   - Bigger example:
     ```js
-    export const { table: myTable, schemas: myTableSchemas } = tableSchema({
+    export const myTableSchemas = tableSchema({
       name: 'myTable',
       title: 'My table',
       rowSchema: {
@@ -62,7 +62,7 @@ sanity install power-table
     })
     ```
 
-- Use the table as a field in schema:
+- Use the table by the name you provided
   ```js
   export default {
     name: 'mySchema',
@@ -75,7 +75,11 @@ sanity install power-table
         type: 'array',
         of: [{ type: 'block' }],
       },
-      myTable,
+      {
+        name: 'table',
+        title: 'My Table',
+        type: 'myTable'
+      }
     ],
   }
   ```
