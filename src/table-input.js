@@ -27,10 +27,6 @@ function getTableTypes(type) {
 
 const TableInput = React.forwardRef((props, ref) => {
   const {type, value, onChange, focusPath, onFocus, onBlur} = props
-  const currentValue = useRef(value)
-  useEffect(() => {
-    currentValue.current = value
-  }, [value])
 
   const [dialog, setDialog] = useState({
     msg: null,
@@ -70,25 +66,29 @@ const TableInput = React.forwardRef((props, ref) => {
     [onChange]
   )
 
-  const initializeTable = useCallback(() => {
-    // Add a single row with a single empty cell (1 row, 1 column)
-    const newValue = {
-      _type: type.name,
-      rows: [
-        {
-          _type: [tableTypes.rowTypeName],
-          _key: uuid(),
-          cells: [newCell()],
-        },
-      ],
-    }
-    return onChange(PatchEvent.from(set(newValue)))
-  }, [type.name, onChange, tableTypes.rowTypeName, tableTypes.cellTypeName, newCell])
+  const initializeTable = useCallback(
+    (_key) => {
+      // Add a single row with a single empty cell (1 row, 1 column)
+      const newValue = {
+        _type: type.name,
+        _key,
+        rows: [
+          {
+            _type: [tableTypes.rowTypeName],
+            _key: uuid(),
+            cells: [newCell()],
+          },
+        ],
+      }
+      return onChange(PatchEvent.from(set(newValue)))
+    },
+    [type.name, onChange, tableTypes.rowTypeName, tableTypes.cellTypeName, newCell]
+  )
 
   const addRow = useCallback(
     (e) => {
       // If we have an empty table, create a new one
-      if (!currentValue.current) return initializeTable()
+      if (!value?.rows) return initializeTable(value?._key)
       const newRow = {
         _type: [tableTypes.rowTypeName],
         _key: uuid(),
@@ -96,7 +96,7 @@ const TableInput = React.forwardRef((props, ref) => {
       }
       return onChange(PatchEvent.from(insert([newRow], 'after', ['rows', -1])))
     },
-    [onChange, initializeTable, tableTypes.rowTypeName, newCell]
+    [onChange, initializeTable, tableTypes.rowTypeName, newCell, value]
   )
 
   const addCellLeft = useCallback(
@@ -234,7 +234,7 @@ const TableInput = React.forwardRef((props, ref) => {
       />
     </Flex>
   ) : (
-    <Button tone="positive" onClick={initializeTable} text="New Table" />
+    <Button tone="positive" onClick={() => initializeTable(uuid())} text="New Table" />
   )
 
   const confirmationDialog =
