@@ -5,7 +5,7 @@ import {uuid} from '@sanity/uuid'
 import React, {useEffect, useRef, useMemo, useState, useCallback} from 'react'
 import Table from './table'
 import PatchEvent, {set, unset, insert} from 'part:@sanity/form-builder/patch-event'
-import {Flex, Button} from '@sanity/ui'
+import {ThemeProvider, studioTheme, Flex, Button} from '@sanity/ui'
 import FormField from 'part:@sanity/components/formfields/default'
 import ConfirmationDialog from 'part:@sanity/components/dialogs/confirm'
 import FullScreenDialog from 'part:@sanity/components/dialogs/fullscreen'
@@ -250,25 +250,27 @@ const TableInput = React.forwardRef((props, ref) => {
     ) : null
 
   return (
-    <div ref={ref}>
-      <FormField label={type.title} description={type.description}>
-        {editorOpen && (
-          <FullScreenDialog
-            key="tableDialog"
-            title={type.title}
-            onClose={() => setEditorOpen(false)}
-            onEscape={() => setEditorOpen(false)}
-          >
-            <div>
-              {table}
-              {buttons}
-              {confirmationDialog}
-            </div>
-          </FullScreenDialog>
-        )}
-        <Button onClick={() => setEditorOpen(true)} text="Edit Table" />
-      </FormField>
-    </div>
+    <ThemeProvider theme={studioTheme}>
+      <div ref={ref}>
+        <FormField label={type.title} description={type.description}>
+          {editorOpen && (
+            <FullScreenDialog
+              key="tableDialog"
+              title={type.title}
+              onClose={() => setEditorOpen(false)}
+              onEscape={() => setEditorOpen(false)}
+            >
+              <div>
+                {table}
+                {buttons}
+                {confirmationDialog}
+              </div>
+            </FullScreenDialog>
+          )}
+          <Button onClick={() => setEditorOpen(true)} text="Edit Table" />
+        </FormField>
+      </div>
+    </ThemeProvider>
   )
 })
 
