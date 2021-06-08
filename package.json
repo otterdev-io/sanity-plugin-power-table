@@ -5,6 +5,7 @@
   "main": "lib/table-input.js",
   "scripts": {
     "build": "sanipack build",
+    "watch": "sanipack build --watch",
     "prepublishOnly": "sanipack build && sanipack verify"
   },
   "repository": {},
@@ -22,6 +23,9 @@
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
+    "babel-plugin-polyfill-corejs2": "^0.2.2",
+    "babel-plugin-polyfill-corejs3": "^0.2.2",
+    "babel-plugin-polyfill-regenerator": "^0.2.2",
     "eslint": "7.28.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-sanity": "5.1.0",
