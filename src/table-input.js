@@ -89,12 +89,26 @@ const TableInput = React.forwardRef((props, ref) => {
     (e) => {
       // If we have an empty table, create a new one
       if (!value?.rows) return initializeTable(value?._key)
+      const longestLength = value.rows.reduce((max, row) => Math.max(max, row.cells.length), 0)
       const newRow = {
         _type: [tableTypes.rowTypeName],
         _key: uuid(),
-        cells: [newCell()],
+        cells: Array.from({length: longestLength}, () => newCell()),
       }
       return onChange(PatchEvent.from(insert([newRow], 'after', ['rows', -1])))
+    },
+    [onChange, initializeTable, tableTypes.rowTypeName, newCell, value]
+  )
+
+  const addColumn = useCallback(
+    (e) => {
+      // If we have an empty table, create a new one
+      if (!value?.rows) return initializeTable(value?._key)
+      return onChange(
+        PatchEvent.from(
+          value.rows.map(({_key}) => insert([newCell()], 'after', ['rows', {_key}, 'cells', -1]))
+        )
+      )
     },
     [onChange, initializeTable, tableTypes.rowTypeName, newCell, value]
   )
@@ -225,6 +239,7 @@ const TableInput = React.forwardRef((props, ref) => {
   const buttons = value ? (
     <Flex justify="space-between">
       <Button onClick={addRow} tone="positive" icon={IoMdAdd} text="Add Row" />
+      <Button onClick={addColumn} tone="positive" icon={IoMdAdd} text="Add Column" />
       <Button
         tone="critical"
         onClick={onClearRequest}
